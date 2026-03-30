@@ -1,0 +1,25 @@
+services:
+  db:
+    # Best practice: Use a specific version and the 'alpine' variant for a smaller, secure image
+    image: postgres:15-alpine
+    # Explicitly names the container for easier identification in the Docker CLI.
+    container_name: real_estate_postgres
+    # Ensures the database restarts automatically if the container crashes or the host server reboots.
+    restart: always
+    environment:
+      # These variables automatically initialize the database, user, and password upon first run
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: lioravr123 
+      POSTGRES_DB: real_estate_db
+    ports:
+      # Maps the host machine's port 5432 to the container's port 5432
+      # This allows the Node.js backend (or tools like pgAdmin/DBeaver) to connect to the DB.
+      - "5433:5432"
+    volumes:
+      # Mounts a named volume ('pgdata') to the internal PostgreSQL data directory.
+      # This guarantees data persistence. Without it, all data is lost if the container is removed.
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  # Declares the named volume used above to store our persistent database records.
+  pgdata:

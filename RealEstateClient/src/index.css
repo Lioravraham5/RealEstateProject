@@ -1,0 +1,306 @@
+/* CSS Reset and basic setup */
+
+/* IMPORT LEAFLET CSS: This is absolutely required for the map tiles to render correctly! 
+   Without this, the map will look broken and scattered. */
+@import "leaflet/dist/leaflet.css";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa; /* Light gray background for the dashboard */
+  direction: rtl; /* Right-to-Left for Hebrew */
+}
+
+.app-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.app-header h1 {
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+/* --- Dashboard UI Layout --- */
+
+/* CSS Grid for responsive KPI cards. 
+   On mobile: 1 column. On desktop: auto-fits as many as possible (min 250px wide) */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.kpi-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-5px); /* Gentle lift effect on hover */
+}
+
+.kpi-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.kpi-info p {
+  margin: 5px 0 0 0;
+  font-size: 1.8rem;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.header-filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: white;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.filter-select {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  min-width: 200px;
+  font-family: inherit;
+}
+
+/* --- Map Specific Fixes --- */
+
+/* Leaflet maps calculate internal coordinates using LTR (Left-To-Right).
+   Since our app is RTL, we must force the map container back to LTR 
+   to prevent markers and popups from glitching out of place. */
+.leaflet-container {
+  direction: ltr;
+  z-index: 1; /* Ensures the map stays below our header/dropdown menus */
+}
+
+/* Force the popup text back to Hebrew alignment */
+.leaflet-popup-content-wrapper {
+  direction: rtl;
+  text-align: right;
+  font-family: inherit;
+}
+
+/* --- Map Controls UI --- */
+
+.map-controls-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping to a new line on mobile */
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 15px 20px;
+  border-radius: 12px 12px 0 0; /* Rounded top corners only, to sit right above the map */
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  gap: 15px;
+}
+
+/* The Toggle Buttons Group (Pins vs Heatmap) */
+.toggle-group {
+  display: flex;
+  background-color: #f1f2f6;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  color: #7f8c8d;
+  transition: all 0.2s ease;
+}
+
+/* Active state for the selected toggle button */
+.toggle-btn.active {
+  background-color: white;
+  color: #2c3e50;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Checkboxes for Map Layers */
+.layers-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.layer-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #34495e;
+}
+
+/* Make checkbox input slightly larger for mobile touch targets */
+.layer-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/*--- Projects Gallery & Cards ---*/
+
+/* 1. The Toolbar (Sorting and Filtering above the cards) */
+.projects-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  gap: 15px;
+}
+
+.sort-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sort-btn {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  color: #7f8c8d;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-btn:hover {
+  background: #f8f9fa;
+}
+
+.sort-btn.active {
+  background: #e1f5fe;
+  border-color: #0288d1;
+  color: #0288d1;
+}
+
+/* 2. The Grid Layout (The magic behind the responsiveness) */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* This single line makes it responsive! No media queries needed. */
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* 3. The Individual Project Card */
+.project-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #f1f2f6;
+}
+
+.project-card:hover {
+  transform: translateY(-4px); /* Slight lift effect */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1); /* Stronger shadow on hover */
+}
+
+/* Card Inner Sections */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #f1f2f6;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+}
+
+.card-title h3 {
+  margin: 0 0 5px 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+}
+
+.card-title p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+/* 4. Status Badges (Pill-shaped colorful labels) */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap; /* Prevents the badge text from breaking into two lines */
+}
+
+/* Dynamic colors based on the lottery status */
+.status-open { background: #e8f8f5; color: #1abc9c; } /* Green for open */
+.status-closed { background: #fdf2e9; color: #e67e22; } /* Orange for closed */
+.status-future { background: #ebf5fb; color: #3498db; } /* Blue for future */
+.status-default { background: #f4f6f7; color: #7f8c8d; } /* Gray fallback */
+
+/* Card Body Rows */
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #34495e;
+  align-items: center;
+}
+
+/* Special highlight box for the winning chance */
+.highlight-win {
+  background: #fcf3cf; /* Light yellow */
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #b9770e; /* Dark yellow/orange text */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  border: 1px dashed #f1c40f;
+}

@@ -1,0 +1,25 @@
+{
+  "name": "realestatebackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "init-db": "node src/config/initDb.js",
+    "sync-data": "node src/services/syncService.js",
+    "sync-cities": "node src/services/geocodeService.js",
+    "sync-all": "npm run sync-data && npm run sync-cities",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "pg": "^8.20.0"
+  }
+}

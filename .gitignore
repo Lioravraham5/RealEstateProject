@@ -1,0 +1,27 @@
+# Dependency folders - catches them anywhere in the project
+node_modules/
+
+# Environment variables - absolute must for security
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build and Temp folders
+dist/
+build/
+.vite/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
