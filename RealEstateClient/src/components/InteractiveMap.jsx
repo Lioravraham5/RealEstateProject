@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.heat'; // Import the heatmap plugin
+import { LocateFixed } from 'lucide-react';
 
 // --- FIX LEAFLET MARKER BUG ---
 // React-Leaflet has a known issue where default marker icons lose their paths during the build process.
@@ -17,7 +18,49 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// --- HEATMAP HELPER COMPONENT ---
+const ISRAEL_CENTER = [31.5, 34.8];
+const DEFAULT_ZOOM = 7;
+
+/**
+ * A custom UI control button that uses the Leaflet map instance
+ * to "fly" back to the default center and zoom level.
+ */
+const RecenterControl = () => {
+    // get access to the underlying Leaflet map instance
+    const map = useMap(); 
+
+    return (
+        <button
+            // Use flyTo for a smooth animated transition back to the center
+            onClick={() => map.flyTo(ISRAEL_CENTER, DEFAULT_ZOOM, { duration: 1.5 })}
+            title="מרכז מפה"
+            style={{
+                position: 'absolute',
+                bottom: '20px', // Positioning it at the bottom left
+                left: '20px',
+                zIndex: 1000, // Leaflet standard for floating controls over the map
+                backgroundColor: 'white',
+                border: '2px solid rgba(0,0,0,0.2)', // Mimicking default Leaflet button style
+                backgroundClip: 'padding-box',
+                borderRadius: '4px',
+                width: '34px',
+                height: '34px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 1px 5px rgba(0,0,0,0.65)'
+            }}
+            // Add a slight hover effect inline
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f4f4f4'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+        >
+            <LocateFixed size={20} color="#2c3e50" />
+        </button>
+    );
+};
+
+
 /**
  * A custom component to bridge leaflet.heat with React-Leaflet.
  * It uses the 'useMap' hook to access the underlying Leaflet map instance,
@@ -60,27 +103,26 @@ const HeatmapLayer = ({ data }) => {
  * @param {Object} activeLayers - Which layers are currently checked
  */
 const InteractiveMap = ({ cityData, viewMode, activeLayers }) => {
-    // Coordinates for the center of Israel
-    const israelCenter = [31.5, 34.8]; 
-
-    // Filter the data based on the checkboxes. 
-    // If 'lotteries' is unchecked, we pass an empty array to the map.
+    // Filter the data based on the checkboxes. If 'lotteries' is unchecked, we pass an empty array to the map.
     const displayData = activeLayers.lotteries ? cityData : [];
 
     return (
         // Wrapper div with CSS for responsive sizing and borders
         <div style={{ height: '500px', width: '100%', borderRadius: '0 0 12px 12px', overflow: 'hidden', border: '1px solid #e0e0e0', borderTop: 'none', zIndex: 0 }}>
             <MapContainer 
-                center={israelCenter} 
-                zoom={7} 
+                center={ISRAEL_CENTER} 
+                zoom={DEFAULT_ZOOM} 
                 scrollWheelZoom={false} // UX Tip: Disable scroll zoom to prevent getting "stuck" when scrolling down the page on mobile
-                style={{ height: '100%', width: '100%' }}
+                style={{ height: '100%', width: '100%', position: 'relative' }}
             >
                 {/* The base map tiles (The actual drawing of roads and borders) */}
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+
+                {/* Inject the custom control into the map */}
+                <RecenterControl />
 
                 {/* LAYER: PINS */}
                 {viewMode === 'pins' && displayData.map((cityObj, index) => {
