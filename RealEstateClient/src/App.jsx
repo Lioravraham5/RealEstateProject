@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>נדל"ן ישראל - דשבורד חכם</h1>
+        <h1>מאגר נתוני הגרלות תכנית דירה בהנחה בישראל</h1>
       </header>
       
       <main className="app-main">

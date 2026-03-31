@@ -19,7 +19,7 @@ const StatusPieChart = ({ data, onStatusClick }) => {
 
     return (
         <div style={{ background: 'white', padding: '20px', borderRadius: '12px', height: '400px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-            <h3 style={{ marginTop: 0, color: '#2c3e50' }}>מדד הוודאות (סטטוס היתרי בנייה)</h3>
+            <h3 style={{ marginTop: 0, color: '#2c3e50' }}>התפלגות פרויקטים לפי סטטוס</h3>
             
             <ResponsiveContainer width="100%" height="90%">
                 <PieChart>

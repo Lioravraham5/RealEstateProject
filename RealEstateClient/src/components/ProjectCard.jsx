@@ -45,7 +45,7 @@ const ProjectCard = ({ project }) => {
                         <MapPin size={18} color="#e74c3c" />
                         {project.city}
                     </h3>
-                    <p>פרויקט מס' {project.lottery_id || '---'}</p>
+                    <p>מזהה פרויקט: {project.lottery_id || '---'}</p>
                 </div>
 
                 {/* Dynamically assign the CSS class for the background color */}

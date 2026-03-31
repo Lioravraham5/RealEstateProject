@@ -9,7 +9,7 @@ import React from 'react';
 const HeaderFilter = ({ cities, selectedCity, onCityChange }) => {
     return (
         <div className="header-filter">
-            <h2>מבט על - שוק הנדל"ן בהגרלות</h2>
+            <h2>סקירת הגרלות לפי עיר</h2>
             
             {/* Dropdown for selecting a city */}
             <select 

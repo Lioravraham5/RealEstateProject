@@ -104,8 +104,8 @@ const Dashboard = () => {
 
             {/* 2. The KPI Cards Grid */}
             <div className="kpi-grid">
-                <KpiCard title="פרויקטים פתוחים" value={totalProjects} icon={<Building2 size={32} />} color="#3498db" />
-                <KpiCard title="סה״כ דירות בהגרלה" value={totalApartments.toLocaleString()} icon={<TrendingUp size={32} />} color="#2ecc71" />
+                <KpiCard title="סה״כ פרויקטים" value={totalProjects} icon={<Building2 size={32} />} color="#3498db" />
+                <KpiCard title="סה״כ יחידות דיור מוגרלות" value={totalApartments.toLocaleString()} icon={<TrendingUp size={32} />} color="#2ecc71" />
                 <KpiCard title="ערים משתתפות" value={activeCitiesCount} icon={<MapPin size={32} />} color="#9b59b6" />
             </div>
 
