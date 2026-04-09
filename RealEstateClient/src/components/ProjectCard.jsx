@@ -1,7 +1,16 @@
 import React from 'react';
 
 // Importing icons to make the card look premium and easy to scan
-import { MapPin, Building, Coins, Home, Trophy } from 'lucide-react';
+import { 
+    MapPin, 
+    Building, 
+    Coins, 
+    Home, 
+    Trophy,
+    Hourglass,
+    CalendarDays, 
+    Tag 
+} from 'lucide-react';
 
 /**
  * A presentational (dumb) component that renders a single project as a card.
@@ -10,35 +19,51 @@ import { MapPin, Building, Coins, Home, Trophy } from 'lucide-react';
 const ProjectCard = ({ project }) => {
 
     // --- Helper Function: Dynamic Status Badge Color ---
-    // This function returns the correct CSS class name based on the exact Hebrew status from the DB
     const getStatusClass = (status) => {
         if (!status) return 'status-default';
 
-        // Exact matching based on the defined database values
         switch (status) {
             case 'בתהליכי הגרלה':
-                return 'status-open';     // Green (Active and relevant)
+                return 'status-open';     
             case 'בחירת דירות':
-                return 'status-future';   // Blue (Moving forward)
+                return 'status-future';   
             case 'בקרת חוזים':
-                return 'status-closed';   // Orange (Administrative/Closed to new users)
+                return 'status-closed';   
             case 'בקרה לאחר איכלוס':
-                return 'status-default';  // Gray (Historical/Completed)
+                return 'status-default';  
             default:
                 return 'status-default';
         }
     };
 
     // --- Helper Function: Format Numbers ---
-    // Adds commas to thousands (e.g., 15000 -> 15,000) or returns a default text if null
     const formatNumber = (num) => {
         return num ? num.toLocaleString() : 'לא צוין';
+    };
+
+    // --- Helper Function: Format Dates ---
+    const formatDate = (dateStr) => {
+        if (!dateStr) return 'טרם פורסם';
+
+        try {
+            const dateObj = new Date(dateStr);
+            if (isNaN(dateObj.getTime())) return 'תאריך לא תקין';
+
+            return new Intl.DateTimeFormat('he-IL', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).format(dateObj);
+        } catch (e) {
+            return 'תאריך לא תקין';
+        }
     };
 
     return (
         <div className="project-card">
 
             {/* Header: City, Project Number, and Status Badge */}
+            {/* Note: Removed the padding we added earlier since the floating tag is gone */}
             <div className="card-header">
                 <div className="card-title">
                     <h3 style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -48,13 +73,21 @@ const ProjectCard = ({ project }) => {
                     <p>מזהה פרויקט: {project.lottery_id || '---'}</p>
                 </div>
 
-                {/* Dynamically assign the CSS class for the background color */}
                 <span className={`status-badge ${getStatusClass(project.status)}`}>
                     {project.status || 'סטטוס לא ידוע'}
                 </span>
             </div>
 
-            {/* Body Rows: Key project details with icons */}
+            {/* --- Body Rows: Key project details with icons --- */}
+            
+            {/* NEW: Lottery Type as a standard row */}
+            <div className="card-row">
+                <span style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#7f8c8d' }}>
+                    <Tag size={16} /> סוג הגרלה:
+                </span>
+                <strong>{project.lottery_type || 'לא צוין'}</strong>
+            </div>
+
             <div className="card-row">
                 <span style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#7f8c8d' }}>
                     <Building size={16} /> קבלן:
@@ -76,15 +109,27 @@ const ProjectCard = ({ project }) => {
                 <strong>₪{formatNumber(project.price_per_meter)}</strong>
             </div>
 
+            <div className="card-row">
+                <span style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#7f8c8d' }}>
+                    <Hourglass size={16} /> סיום הרשמה:
+                </span>
+                <strong>{formatDate(project.signup_end_date)}</strong>
+            </div>
+
+            <div className="card-row">
+                <span style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#7f8c8d' }}>
+                    <CalendarDays size={16} /> תאריך הגרלה:
+                </span>
+                <strong>{formatDate(project.lottery_date)}</strong>
+            </div>
+
             {/* Bottom Highlight: The calculated winning chance */}
-            {/* We conditionally render this only if win_probability exists in the DB */}
             {project.win_probability && (
-                <div className="highlight-win">
+                <div className="highlight-win" style={{ marginTop: 'auto' }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                         <Trophy size={18} /> סיכוי זכייה משוער:
                     </span>
                     <span style={{ fontSize: '1.2rem' }}>
-                        {/* We parse it as a float to fix potential decimal issues, then add % */}
                         {parseFloat(project.win_probability).toFixed(2)}%
                     </span>
                 </div>
