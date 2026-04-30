@@ -58,7 +58,7 @@ export const syncLotteriesData = async () => {
         console.log('🎉 Database sync completed successfully!');
 
     } catch (error) {
-        console.error('❌ Error syncing data:', erroב
+        console.error('❌ Error syncing data:', error);
     }
 };
 
