@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import lotteryRoutes from './routes/lotteryRoutes.js';
 import statsRoutes from './routes/statsRoutes.js';
+import { startCronJobs } from './services/cronJob.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,6 +27,10 @@ app.use('/api/stats', statsRoutes);
 app.get('/', (req, res) => {
     res.send('Real Estate API is running... ');
 });
+
+// --- Start Background Tasks ---
+// Initialize the CRON jobs scheduler before the server starts
+startCronJobs();
 
 // Start the server
 app.listen(PORT, () => {

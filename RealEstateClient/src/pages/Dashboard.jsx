@@ -31,8 +31,7 @@ const Dashboard = () => {
     // Map States
     const [mapViewMode, setMapViewMode] = useState('pins'); // 'pins' or 'heatmap'
     const [activeLayers, setActiveLayers] = useState({ 
-        lotteries: true, 
-        directSales: false 
+        lotteries: true
     });
 
     useEffect(() => {

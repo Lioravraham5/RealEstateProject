@@ -1,7 +1,8 @@
 import pool from '../config/db.js';
+import { upsertLottery } from '../repositories/lotteryRepository.js';
 
 // The exact URL you provided for the active lotteries
-const LOTTERY_API_URL = 'https://data.gov.il/api/3/action/datastore_search?resource_id=7c8255d0-49ef-49db-8904-4cf917586031&limit=50'; // Starting with a limit of 50 for testing
+const LOTTERY_API_URL = 'https://data.gov.il/api/3/action/datastore_search?resource_id=7c8255d0-49ef-49db-8904-4cf917586031&limit'; // Starting with a limit of 50 for testing
 
 // --- Helper Functions for Data Sanitization ---
 
@@ -22,45 +23,20 @@ const cleanDate = (dateStr) => {
 
 export const syncLotteriesData = async () => {
     try {
-        console.log('Fetching data from Gov API...');
+        console.log('Fetching ALL data from Gov API...');
         
-        // Native fetch API (available in modern Node.js)
         const response = await fetch(LOTTERY_API_URL);
         const data = await response.json();
-
-        // Extract the records array from the complex JSON structure
         const records = data.result.records;
         
-        console.log(`Fetched ${records.length} records. Starting database sync...`);
+        console.log(`Fetched ${records.length} records. Starting database sync via Repository...`);
 
-        // Iterate through each record and insert/update it in the database
         for (const record of records) {
-            
-            // 1. Sanitize the data using our helper functions
             const pricePerMeter = cleanPrice(record.PriceForMeter);
             const signupEndDate = cleanDate(record.LotteryEndSignupDate);
             const lotteryDate = cleanDate(record.LotteryExecutionDate);
             const lotteryType = record.LotteryType ? record.LotteryType.trim() : 'לא צוין';
 
-            // 2. Prepare the Upsert Query
-            // Best Practice: ON CONFLICT DO UPDATE ensures we keep our data fresh.
-            // We added the new date columns here so if the government extends a deadline, our DB updates automatically!
-            const query = `
-                INSERT INTO lotteries (
-                    lottery_id, city, project_name, provider_name, 
-                    price_per_meter, total_units, total_subscribers, status,
-                    signup_end_date, lottery_date, lottery_type
-                ) 
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-                ON CONFLICT (lottery_id) 
-                DO UPDATE SET 
-                    total_subscribers = EXCLUDED.total_subscribers,
-                    status = EXCLUDED.status,
-                    signup_end_date = EXCLUDED.signup_end_date,
-                    lottery_date = EXCLUDED.lottery_date;
-            `;
-
-            // 3. Map the API fields to our parameterized SQL query
             const values = [
                 record.LotteryId,
                 record.LamasName,
@@ -75,14 +51,14 @@ export const syncLotteriesData = async () => {
                 lotteryType     
             ];
 
-            // Execute the query for this specific record
-            await pool.query(query, values);
+            // Delegate the database operation to the Repository layer
+            await upsertLottery(values);
         }
 
         console.log('🎉 Database sync completed successfully!');
 
     } catch (error) {
-        console.error('❌ Error syncing data:', error);
+        console.error('❌ Error syncing data:', erroב
     }
 };
 

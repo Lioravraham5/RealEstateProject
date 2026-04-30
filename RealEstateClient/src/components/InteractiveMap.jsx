@@ -71,11 +71,14 @@ const HeatmapLayer = ({ data }) => {
 
     useEffect(() => {
         // 1. Prepare the data array format expected by leaflet.heat: [lat, lng, intensity]
-        const points = data.map(city => [
-            parseFloat(city.lat),
-            parseFloat(city.lng),
-            city.total_apartments // The more apartments, the "hotter" (redder) the area
-        ]);
+        // BUG FIX: We MUST filter out any cities that have null/missing coordinates before passing to the heatmap!
+        const points = data
+            .filter(city => city.lat != null && city.lng != null) // SAFETY CHECK: Keep only valid coordinates
+            .map(city => [
+                parseFloat(city.lat),
+                parseFloat(city.lng),
+                city.total_apartments || 0 // The more apartments, the "hotter" (redder) the area
+            ]);
 
         // 2. Create the heat layer
         const heatLayer = L.heatLayer(points, {

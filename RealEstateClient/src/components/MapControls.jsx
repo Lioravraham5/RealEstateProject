@@ -6,7 +6,7 @@ import { MapPin, Flame } from 'lucide-react'; // Using icons for Pins and Heatma
  * It receives its current state and update functions from the parent (Dashboard).
  * * @param {string} viewMode - The current active map view ('pins' or 'heatmap')
  * @param {Function} onViewModeChange - Callback to change the view mode
- * @param {Object} activeLayers - State of checkboxes: { lotteries: boolean, directSales: boolean }
+ * @param {Object} activeLayers - State of checkboxes: { lotteries: boolean }
  * @param {Function} onLayerChange - Callback to toggle a specific layer
  */
 const MapControls = ({ viewMode, onViewModeChange, activeLayers, onLayerChange }) => {
@@ -46,20 +46,6 @@ const MapControls = ({ viewMode, onViewModeChange, activeLayers, onLayerChange }
                         onChange={() => onLayerChange('lotteries')}
                     />
                     דירות בהגרלה
-                </label>
-
-                {/* Checkbox for Direct Sales (Placeholder for future data) */}
-                <label className="layer-checkbox" title="בקרוב: נתונים ממשלתיים יעודכנו">
-                    <input 
-                        type="checkbox" 
-                        checked={activeLayers.directSales}
-                        onChange={() => onLayerChange('directSales')}
-                        // Uncomment the line below to disable the checkbox entirely until data is ready:
-                        // disabled={true} 
-                    />
-                    <span style={{ color: activeLayers.directSales ? '#34495e' : '#bdc3c7' }}>
-                        ללא הגרלה (מכירות ישירות)
-                    </span>
                 </label>
             </div>
 
