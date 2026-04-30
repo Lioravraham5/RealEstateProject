@@ -4,7 +4,7 @@ import pool from '../config/db.js';
  * Service to fetch and store geographic coordinates for cities.
  * This enables map-based features in the frontend.
  */
-const syncCityCoordinates = async () => {
+export const syncCityCoordinates = async () => {
     try {
         // 1. Initialize the storage table if it doesn't exist.
         // Using DECIMAL(10, 8) for high precision mapping.
