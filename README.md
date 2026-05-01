@@ -101,4 +101,4 @@ The entire application is fully deployed and accessible online. The architecture
 * **Backend API & Services:** Hosted on Render (Node.js runtime environment).
 * **Database:** Hosted on Neon.tech (Serverless PostgreSQL).
 
-👉 Live Demo: [Israeli Real Estate Dashboard]([https://openweathermap.org/api](https://real-estate-project-phi-eight.vercel.app/))
+👉 Live Demo: [Israeli Real Estate Dashboard](https://real-estate-project-phi-eight.vercel.app/)
