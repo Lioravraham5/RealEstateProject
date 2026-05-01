@@ -1,9 +1,8 @@
-// src/services/apiService.js
-// This file is responsible for all HTTP communication with our Node.js Backend.
-// Keeping it separate from the UI components is a standard Best Practice (Separation of Concerns).
 
-// The base URL of our local backend server
-const BASE_URL = 'http://localhost:5000/api';
+// This file is responsible for all HTTP communication with our Node.js Backend.
+
+// This allows us to easily switch between local development and production without changing the code.
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://realestateproject-my47.onrender.com/api';
 
 /**
  * Fetches the list of lotteries from the backend.
