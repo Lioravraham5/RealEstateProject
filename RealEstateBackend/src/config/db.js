@@ -20,7 +20,7 @@ pool.connect((err, client, release) => {
     if (err) {
         console.error('Error acquiring client from pool:', err.stack);
     } else {
-        console.log('Successfully connected to the local PostgreSQL database! 🚀');
+        console.log('Successfully connected to the PostgreSQL database! 🚀');
         release();
     }
 });
