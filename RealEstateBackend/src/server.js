@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import lotteryRoutes from './routes/lotteryRoutes.js';
 import statsRoutes from './routes/statsRoutes.js';
-import { startCronJobs } from './services/cronJob.js';
+import syncRoutes from './routes/syncRoutes.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -22,15 +22,12 @@ app.use(express.json());
 // Mount the lottery routes on the '/api/lotteries' path
 app.use('/api/lotteries', lotteryRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/sync', syncRoutes);
 
 // A simple health-check route to verify the server is running
 app.get('/', (req, res) => {
     res.send('Real Estate API is running... ');
 });
-
-// --- Start Background Tasks ---
-// Initialize the CRON jobs scheduler before the server starts
-startCronJobs();
 
 // Start the server
 app.listen(PORT, () => {
